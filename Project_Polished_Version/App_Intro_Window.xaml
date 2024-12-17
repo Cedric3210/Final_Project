@@ -1,0 +1,54 @@
+﻿<Window x:Class="Project_Polished_Version.App_Intro_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_Polished_Version"
+        mc:Ignorable="d"
+        Height="450" Width="800"
+        Title="UM HIRE"
+        Icon="Images/UMHIREICON.ico"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <!-- Set the Grid background using an ImageBrush -->
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/Blue.jpg" 
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+        <TextBlock HorizontalAlignment="Left" Height="132" Margin="113,29,0,0" TextWrapping="Wrap" Text="Welcome to UM Hire" VerticalAlignment="Top" Width="287" Foreground="White" FontSize="40" FontWeight="Bold" FontFamily="Yu Gothic UI"/>
+        <TextBlock HorizontalAlignment="Left" Height="142" Margin="382,182,0,0" 
+           TextWrapping="Wrap" VerticalAlignment="Top" Width="358" 
+           FontSize="10" Foreground="White" TextAlignment="Justify"><Run Text="&#x9;Whether you're an employer looking for top talent or a job seeker searching for your next opportunity, UM Hire provides a streamlined, intuitive platform to meet all your hiring needs. From job listings to applications, everything is designed to make the process faster, easier, and more efficient."/><LineBreak/><Run/><LineBreak/><Run Text="&#x9;Let us help you connect, grow, and succeed. Join the UM Hire community today!"/></TextBlock>
+        <Button Content="Get Started!" 
+        HorizontalAlignment="Left" 
+        Height="56" 
+        Margin="551,352,0,0" 
+        VerticalAlignment="Top" 
+        Width="144" 
+        Foreground="White" 
+        FontSize="16"
+        Click="GetStartedButton_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <!-- Rounded Border with transparent background -->
+                    <Border Background="Transparent" 
+                    BorderBrush="Gray" 
+                    BorderThickness="2" 
+                    CornerRadius="25">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Image Source="Images/Logo.png" HorizontalAlignment="Left" Height="180" Margin="37,290,0,0" VerticalAlignment="Top" Width="180"/>
+        <Image Source="Images/UMLOGO.png" HorizontalAlignment="Left" Height="80" Margin="27,244,0,0" VerticalAlignment="Top" Width="80"/>
+        <Image Source="Images/ICEPEP_Logo.png" HorizontalAlignment="Left" Height="100" Margin="136,234,0,0" VerticalAlignment="Top" Width="100"/>
+
+    </Grid>
+</Window>

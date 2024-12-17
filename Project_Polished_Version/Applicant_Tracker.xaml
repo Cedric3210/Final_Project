@@ -11,6 +11,7 @@
         AllowsTransparency="True"
         Background="AliceBlue"
         ResizeMode="NoResize"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -31,16 +32,20 @@
 
         <!-- Content Section -->
         <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="107*"/>
+                <ColumnDefinition Width="53*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- Search Bar -->
-            <TextBox Grid.Row="0" Width="300" Height="30" VerticalAlignment="Center" Margin="0,0,0,10" />
+            <TextBox Grid.Row="0" Width="300" Height="30" VerticalAlignment="Top" Margin="330,0,12,0" />
 
             <!-- Applicant List -->
-            <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Grid.RowSpan="2">
+            <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
                 <ListView Grid.Row="1" x:Name="Job_Sent_Table">
                     <ListView.View>
                         <GridView>

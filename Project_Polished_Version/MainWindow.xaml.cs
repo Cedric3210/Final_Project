@@ -3,6 +3,8 @@ using Project_Polished_Version.Classes;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 namespace Project_Polished_Version
@@ -21,12 +23,13 @@ namespace Project_Polished_Version
         public static int UserID;
         public static int CompanyID;
         public static string UserEmail;
+        public static bool UserType { get; set; }
         public MainWindow()
         {
             InitializeComponent();
 
             // Initialize database connection
-            connection = new MySqlConnection(_connection);
+            connection = new MySqlConnection(ConnectionClass.ConnectionString);
 
             // Initialize account data stores
             userAccounts = new Dictionary<string, ApplicantUser>(StringComparer.OrdinalIgnoreCase);
@@ -66,6 +69,7 @@ namespace Project_Polished_Version
                             Gender = reader.IsDBNull(reader.GetOrdinal("gender")) ? "" : reader.GetString("gender").Trim(),
                             Address = reader["address"] != DBNull.Value ? reader["address"].ToString().Trim() : null,
                             Email = email,
+                            Applicant_Photo = reader["Profile_Picture"] != DBNull.Value ? reader["Profile_Picture"].ToString().Trim() : null,
                             Password = reader["password"] != DBNull.Value ? reader["password"].ToString().Trim() : null
                         };
 
@@ -131,6 +135,7 @@ namespace Project_Polished_Version
             // Check company accounts
             if (companyAccounts.TryGetValue(username, out CompanyUser companyRecord) && companyRecord.CompanyPassword == password)
             {
+                UserType = true;
                 id = companyRecord.CompanyId;
                 isCompany = true;
                 return true;
@@ -145,7 +150,7 @@ namespace Project_Polished_Version
         {
             // Navigate to register page
             new Register_Window().Show();
-            //this.Hide();
+            this.Close();
         }
 
         private void Log_In_Button_Click(object sender, RoutedEventArgs e)
@@ -157,20 +162,19 @@ namespace Project_Polished_Version
 
                 if (AuthenticateUser(sanitizedUsername, sanitizedPassword, out int id, out bool isCompany))
                 {
+
                     if (isCompany)
                     {
-                        // Navigate to company dashboard
                         CompanyID = id;
                         new Company_DashBoard().Show();
                     }
                     else
                     {
-                        // Navigate to user dashboard
                         UserEmail = sanitizedUsername;
                         UserID = id;
                         new Applicant_DashBoard().Show();
                     }
-                    this.Hide();
+                    this.Close();
                 }
                 else
                 {
@@ -186,7 +190,7 @@ namespace Project_Polished_Version
         private void Register_Button_Click_Company(object sender, RoutedEventArgs e)
         {
             Register_Company rc = new Register_Company();
-            this.Hide();
+            this.Close();
             rc.Show();
         }
 

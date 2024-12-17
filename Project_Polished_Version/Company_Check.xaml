@@ -5,7 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_Polished_Version"
         mc:Ignorable="d"
-        Title="Company_Check" Height="450" Width="800">
+       Height="670" Width="1000"
+        Title="UM HIRE"
+        Icon="Images/UMHIREICON.ico"
+
+        Background="AliceBlue"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,20 +24,23 @@
                 <ImageBrush Stretch="None" ImageSource="Images/BlueZoom.jpg" AlignmentY="Top" AlignmentX="Center" />
             </Border.Background>
             <StackPanel Orientation="Horizontal" Background="Transparent">
-                <TextBlock Text="Applicant Checker" Foreground="White" FontSize="24" VerticalAlignment="Center" TextAlignment="Center" Width="800" />
-                <Button Content="Button"/>
+                <TextBlock Text="Applicant Checker" Foreground="White" FontSize="24" VerticalAlignment="Center" TextAlignment="Center" Width="1000" />
             </StackPanel>
         </Border>
 
         <!-- Content Section -->
         <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition Width="17*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <!-- Applicant List -->
-            <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Grid.RowSpan="2">
+            <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
 
                 <ListView Grid.Row="1" x:Name="Job_Sent_Table" ItemsSource="{Binding Applicants}" Margin="0,74,0,0">
                     <ListView.View>
@@ -45,10 +54,20 @@
                     </ListView.View>
                 </ListView>
             </Border>
-            <Button x:Name="submit_Btn" Content="submit" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top"
-                     Width="58" Click="Submit_Btn"/>
-            <Button x:Name="Back_Btn" Content="Back" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"
-                    Click="Back_Btn_Click" Width="58">
+            <Button x:Name="submit_Btn" Content="Submit" HorizontalAlignment="Left" Margin="88,-64,0,0" VerticalAlignment="Top"
+                  Width="60" Height="20" Click="Submit_Btn">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="1" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button x:Name="Back_Btn" Content="Back" HorizontalAlignment="Left" Margin="0,-64,0,0" VerticalAlignment="Top"
+                    Click="Back_Btn_Click" Width="60" Height="20" RenderTransformOrigin="0.37,0.525">
 
                 <Button.Template>
                     <ControlTemplate TargetType="Button">

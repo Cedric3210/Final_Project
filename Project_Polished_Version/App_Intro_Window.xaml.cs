@@ -15,20 +15,29 @@ using System.Windows.Shapes;
 namespace Project_Polished_Version
 {
     /// <summary>
-    /// Interaction logic for Messages.xaml
+    /// Interaction logic for App_Intro_Window.xaml
     /// </summary>
-    public partial class Messages : Window
+    public partial class App_Intro_Window : Window
     {
-        public Messages()
+        public App_Intro_Window()
         {
             InitializeComponent();
         }
 
-        private void BackMessagesClickBtn(object sender, RoutedEventArgs e)
+        private void GetStartedButton_Click(object sender, RoutedEventArgs e)
         {
-            Applicant_DashBoard mn = new Applicant_DashBoard();
-            this.Close();
-            mn.Show();
+            try
+            {
+               
+                MainWindow mc = new MainWindow();
+                mc.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Show: " + ex.Message);
+            }
+           
         }
     }
 }

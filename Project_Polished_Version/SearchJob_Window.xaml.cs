@@ -3,62 +3,67 @@ using Project_Polished_Version.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 namespace Project_Polished_Version
 {
 
     public partial class SearchJob_Window : Window
     {
+        public static List<Jobs> jobFeed = new List<Jobs>();
         private static string connectionString = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%;Pooling=true";
+
         public SearchJob_Window()
         {
+            DataContext = this;
             InitializeComponent();
             PopulateListBox();
         }
         private List<Jobs> allJobs = new List<Jobs>();
         private async void PopulateListBox()
         {
-            allJobs = await Job_DataBaseAsync();
-            JobList.ItemsSource = allJobs;
+            try
+            {
+                allJobs = await Job_DataBaseAsync();
+                JobList.ItemsSource = allJobs; // Set the ItemsSource to bind data to the ListBox
+                if (allJobs.Count == 0)
+                {
+                    MessageBox.Show("No jobs found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error populating jobs: {ex.Message}");
+            }
         }
 
         public static async Task<List<Jobs>> Job_DataBaseAsync()
         {
-            List<Jobs> jobFeed = new List<Jobs>();
+            var jobFeedList = new List<Jobs>();
 
-
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
             {
                 try
                 {
                     await connection.OpenAsync();
-
-                    string query = "SELECT Job_Position, Job_Description, is_filled, Job_id, Company_userNumber FROM jobs_db LIMIT 1000";
+                    string query = "SELECT Job_Title,Job_Position, Job_Description, is_filled, Job_id, Company_userNumber, Salary FROM jobs_db";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
 
                     using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
-                            jobFeed.Add(new Jobs
+                            jobFeedList.Add(new Jobs
                             {
+                                Job_Title = reader["Job_Title"].ToString(),
                                 Job_Position = reader["Job_Position"].ToString(),
                                 Job_Description = reader["Job_Description"].ToString(),
                                 IsFilled = reader["is_filled"].ToString(),
                                 Job_id = Convert.ToInt32(reader["Job_id"]),
-                                Company_userNumber = Convert.ToInt32(reader["Company_userNumber"])
+                                Company_userNumber = Convert.ToInt32(reader["Company_userNumber"]),
+                                Job_Salary = reader["Salary"].ToString()
                             });
                         }
                     }
@@ -69,7 +74,7 @@ namespace Project_Polished_Version
                 }
             }
 
-            return jobFeed;
+            return jobFeedList;
         }
 
         Jobs TheSelectedJobs;
@@ -86,7 +91,7 @@ namespace Project_Polished_Version
             JobList.ItemsSource = filteredList;
         }
 
-        private int Company_Number = 0;
+        public static int Company_Number { get; set; }
         int _Resume_Number = 1;
         private void getJobs()
         {
@@ -111,7 +116,7 @@ namespace Project_Polished_Version
                     Email = MainWindow.UserEmail
                 };
 
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
                 {
                     connection.Open();
                     using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -158,13 +163,16 @@ namespace Project_Polished_Version
             {
                 Company_Number = selectedJobs.Company_userNumber;
                 TheSelectedJobs = selectedJobs;
+                Job_Title.Text = selectedJobs.Job_Title;
+                Job_Position.Text = selectedJobs.Job_Position;
+                JobDetailsDescription.Text = selectedJobs.Job_Description;
             }
         }
 
         private void Back_Button(object sender, RoutedEventArgs e)
         {
             Applicant_DashBoard db = new Applicant_DashBoard();
-            this.Hide();
+            this.Close();
             db.Show();
         }
     }

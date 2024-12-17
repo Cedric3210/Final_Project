@@ -14,19 +14,12 @@ namespace Project_Polished_Version.Classes
         public int Company_userNumber { get; set; }
         public string IsFilled { get; set; }
         public string Job_Company { get; set; }
+
+        public string Job_Salary { get; set; }
+
+        public string Job_Title { get; set; }
         public Jobs()
         {
-        }
-
-        public Jobs(string jp, int ji, string jd, int cun, string isfilled, string J_Company)
-        {
-            Job_Position = jp;
-            Job_id = ji;
-            Job_Description = jd;
-            Company_userNumber = cun;
-            IsFilled = isfilled;
-            Job_Company = J_Company;
-
         }
         public override string ToString()
         {

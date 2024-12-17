@@ -50,7 +50,7 @@ namespace Project_Polished_Version
 
             // SQL insert query
             string query = "INSERT INTO company_accounts (Company_Name, Company_address, password, email) " +
-                           "VALUES (@Company_Name, @Company_address, @password, @Email)";
+                           "VALUES (@Company_Name, @Company_address, @password, @Email,)";
 
             try
             {

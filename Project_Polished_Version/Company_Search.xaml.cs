@@ -46,7 +46,7 @@ namespace Project_Polished_Version
             List<CompanyUser> companyList = new List<CompanyUser>();
 
 
-            using (MySqlConnection connection = new MySqlConnection(Connection))
+            using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
             {
                 try
                 {
@@ -106,7 +106,7 @@ namespace Project_Polished_Version
             if (CompanyListBox.SelectedItem is CompanyUser TheSelectedCompany)
             {
                 Company_Profile cp = new Company_Profile(TheSelectedCompany);
-                this.Hide();
+                this.Close();
                 cp.Show();
             }
         }
@@ -114,7 +114,7 @@ namespace Project_Polished_Version
         private void Back_Button(object sender, RoutedEventArgs e)
         {
             Applicant_DashBoard cdb = new Applicant_DashBoard();
-            this.Hide();
+            this.Close();
             cdb.Show();
         }
     }

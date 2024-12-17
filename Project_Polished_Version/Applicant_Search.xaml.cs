@@ -7,9 +7,6 @@ using System.Windows;
 
 namespace Project_Polished_Version
 {
-    /// <summary>
-    /// Interaction logic for Applicant_Search.xaml
-    /// </summary>
     public partial class Applicant_Search : Window
     {
         private static string Connection = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%";
@@ -33,7 +30,7 @@ namespace Project_Polished_Version
         {
             List<ApplicantUser> applicantFeed = new List<ApplicantUser>();
 
-            using (MySqlConnection connection = new MySqlConnection(Connection))
+            using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
             {
                 try
                 {
@@ -94,6 +91,7 @@ namespace Project_Polished_Version
 
             JobList.ItemsSource = filteredList;
         }
+        public static int applicantNumber { get; set; }
 
         private void viewProfile_btn(object sender, RoutedEventArgs e)
         {
@@ -107,7 +105,9 @@ namespace Project_Polished_Version
                     }
 
                     // Open the Applicant_Profile window
-                    this.Hide();
+                    applicantNumber = selectedUser.Id;
+
+                    this.Close();
                     Applicant_Profile userProfile = new Applicant_Profile(selectedUser);
                     userProfile.Show();
                 }
@@ -134,12 +134,12 @@ namespace Project_Polished_Version
             {
                 case 1:
                     Applicant_DashBoard db = new Applicant_DashBoard();
-                    this.Hide();
+                    this.Close();
                     db.Show();
                     break;
                 case 2:
                     Company_DashBoard cd = new Company_DashBoard();
-                    this.Hide();
+                    this.Close();
                     cd.Show();
                     break;
             }

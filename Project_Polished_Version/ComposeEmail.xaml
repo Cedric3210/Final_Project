@@ -11,6 +11,7 @@
         AllowsTransparency="True"
         Background="AliceBlue"
         ResizeMode="NoResize"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <!-- Header -->

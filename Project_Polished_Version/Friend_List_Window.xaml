@@ -4,73 +4,106 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_Polished_Version"
+          xmlns:local1="clr-namespace:Project_Polished_Version.Classes"
         mc:Ignorable="d"
         Height="670" Width="1000"
         Title="UM HIRE"
         Icon="Images/UMHIREICON.ico"
-        AllowsTransparency="True"
         Background="AliceBlue"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <local1:ConnectStatus x:Key="ConnectStatus"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.Background>
             <ImageBrush Stretch="None" ImageSource="Images/Blue.jpg" AlignmentY="Top" AlignmentX="Center"/>
         </Grid.Background>
-        <!-- Header Section -->
-        <DockPanel Background="Transparent" Height="60" VerticalAlignment="Top">
-            <TextBlock Text="Friend List" FontSize="20" FontWeight="Bold" Foreground="White"
-                    VerticalAlignment="Center" Margin="10"/>
-            <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10">
 
-                <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Background="Transparent" Margin="0,0,10,0">
-                    <Button x:Name="Connected_Applicant_Button"  Content="Connect Requests" Background="Transparent" Foreground="White" 
-                        Width="110" Height="25" BorderBrush="Transparent" FontWeight="Bold" 
-                        HorizontalAlignment="Center" VerticalAlignment="Center" Click="Friend_Request_Toggle" />
-                </Border>
-                <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Background="Transparent"/>
-            </DockPanel>
-        </DockPanel>
+        <TextBlock Text="Friend List" FontSize="24" Foreground="White" 
+                   FontWeight="Bold" Margin="20,10,0,0" />
 
-        <!-- Tabs Section -->
-        <StackPanel Orientation="Horizontal" Background="White" Height="40" VerticalAlignment="Top" Margin="0,60,0,0">
-            <Button Content="All Friends" Background="White" BorderThickness="0" Padding="10" FontSize="14"/>
+        <Border Background="White" Margin="10,-500,0,0" Height="40">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="All" Width="100" Height="40" BorderBrush="Black" BorderThickness="0.5"
+                        Background="White" Foreground="Black" FontWeight="Bold" />
+                <Button Content="Pending Request" Width="150" Height="40" BorderBrush="Black" BorderThickness="0.5"
+                        Background="White" Foreground="Black" FontWeight="Bold" />
+                <Button Content="Suggested" Width="100" Height="40" BorderBrush="Black" BorderThickness="0.5"
+                        Background="White" Foreground="Black" FontWeight="Bold" />
+            </StackPanel>
+        </Border>
+
+        <StackPanel Margin="10,100,10,10">
+
+            <Border BorderBrush="Black" BorderThickness="0,0,0,1" Padding="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+
+                        <ColumnDefinition Width="*" />
+
+                        <ColumnDefinition Width="200" />
+
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Width="80" Height="80" Fill="LightGray" VerticalAlignment="Center" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <TextBlock Text="Doe A. Deer" FontSize="16" Foreground="White" />
+                        <TextBlock Text="Doctor of Veterinary Medicine" FontSize="12" Foreground="LightGray" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Deny" Background="Red" Foreground="White" Width="80" Height="40" Margin="5" />
+                        <Button Content="Accept" Background="Blue" Foreground="White" Width="80" Height="40" Margin="5" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="0,0,0,1" Padding="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Width="80" Height="80" Fill="LightGray" VerticalAlignment="Center" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <TextBlock Text="Cardo Dalisay" FontSize="16" Foreground="White" />
+                        <TextBlock Text="IT Security" FontSize="12" Foreground="LightGray" />
+                    </StackPanel>
+                    
+                    <Button Grid.Column="2" Content="Friends" Background="Blue" Foreground="White" Width="80" Height="40" 
+                            HorizontalAlignment="Right" Margin="5" />
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="0,0,0,1" Padding="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Width="80" Height="80" Fill="LightGray" VerticalAlignment="Center" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <TextBlock Text="Marisse Caral" FontSize="16" Foreground="White" />
+                        <TextBlock Text="Human Resources" FontSize="12" Foreground="LightGray" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Deny" Background="Red" Foreground="White" Width="80" Height="40" Margin="5" />
+                        <Button Content="Accept" Background="Blue" Foreground="White" Width="80" Height="40" Margin="5" />
+                    </StackPanel>
+                </Grid>
+            </Border>
         </StackPanel>
-
-        <!-- Search Section -->
-        <DockPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,60,10,0">
-            <TextBox Width="200" Height="30" VerticalAlignment="Center" Text="Search for your friends..." Margin="10,5,0,5"/>
-        </DockPanel>
-
-        <!-- Friend List -->
-        <ScrollViewer Margin="10,110,10,10" x:Name="ScrollWindowData">
-            <ItemsControl x:Name="friendsList">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="1" BorderBrush="#E0E0E0" Margin="0,5" Background="White">
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="150"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Profile Picture -->
-                                <Ellipse Fill="Gray" Width="70" Height="70" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Margin="5"/>
-
-                                <!-- User Name and Info -->
-                                <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="10,0">
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16"/>
-                                    <TextBlock Text="{Binding FriendCount, StringFormat=\{0\} friends}" FontSize="12" Foreground="Gray"/>
-                                </StackPanel>
-
-                                <!-- Action Button -->
-                                <Button Content="Friends" Background="White" Foreground="Black" Click="Accept_Friend"
-                             BorderBrush="Black" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
     </Grid>
 </Window>

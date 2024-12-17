@@ -219,7 +219,13 @@
     <Compile Include="Applicant_Tracker.xaml.cs">
       <DependentUpon>Applicant_Tracker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="App_Intro_Window.xaml.cs">
+      <DependentUpon>App_Intro_Window.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\Applicant_Info.cs" />
+    <Compile Include="Classes\ConnectionClass.cs" />
+    <Compile Include="Classes\ConnectStatus.cs" />
+    <Compile Include="Classes\Global_Repository.cs" />
     <Compile Include="Classes\RelayCommand.cs" />
     <Compile Include="Classes\Resume.cs" />
     <Compile Include="Company_Check.xaml.cs">
@@ -237,10 +243,22 @@
     <Compile Include="ComposeEmail.xaml.cs">
       <DependentUpon>ComposeEmail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Create_Jobs_Window.xaml.cs">
+      <DependentUpon>Create_Jobs_Window.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Events\ApplicantEvents.cs" />
+    <Compile Include="Events\CompanyEvents.cs" />
+    <Compile Include="Events\EmailEvents.cs" />
+    <Compile Include="Events\EventDispatcher.cs" />
+    <Compile Include="Events\FriendEvents.cs" />
+    <Compile Include="Events\HashedPasswordEvent.cs" />
+    <Compile Include="Events\JobEvent.cs" />
+    <Compile Include="Events\LogIn_Events.cs" />
+    <Compile Include="Events\MainWindowEvents.cs" />
+    <Compile Include="Events\PostsEvents.cs" />
     <Compile Include="Friend_List_Window.xaml.cs">
       <DependentUpon>Friend_List_Window.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Job_Available.xaml.cs" />
     <Compile Include="Messages.xaml.cs">
       <DependentUpon>Messages.xaml</DependentUpon>
     </Compile>
@@ -252,6 +270,9 @@
     </Compile>
     <Compile Include="Register_Window.xaml.cs">
       <DependentUpon>Register_Window.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Remove_Job_Window.xaml.cs">
+      <DependentUpon>Remove_Job_Window.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchJob_Window.xaml.cs">
       <DependentUpon>SearchJob_Window.xaml</DependentUpon>
@@ -272,6 +293,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="App_Intro_Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Company_Check.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -289,6 +314,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ComposeEmail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Create_Jobs_Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -342,6 +371,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Register_Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Remove_Job_Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -416,6 +449,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\UMHIREICON.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ICEPEP_LOGO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UMLOGO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <SplashScreen Include="Images\LOADSC.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </SplashScreen>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.1.1.0\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.1.1.0\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />

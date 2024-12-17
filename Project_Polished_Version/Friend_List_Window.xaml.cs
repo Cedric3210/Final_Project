@@ -1,17 +1,14 @@
-﻿using Project_Polished_Version.Classes;
-using MySql.Data.MySqlClient;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
-using System;
 using System.Windows.Controls;
+using MySql.Data.MySqlClient;
+using Project_Polished_Version.Classes;
 
 namespace Project_Polished_Version
 {
-    /// <summary>
-    /// Interaction logic for Friend_List_Window.xaml
-    /// </summary>
     public partial class Friend_List_Window : Window
     {
         private string _connection = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%";
@@ -21,46 +18,91 @@ namespace Project_Polished_Version
         public Friend_List_Window()
         {
             InitializeComponent();
-            this.DataContext = this; // Set the DataContext for binding
-            friendsList.ItemsSource = ApList; // Bind the list to the UI
-            LoadDataAsync(); // Initial load
+            DataContext = this;
+            LoadDataAsync("LOL");
         }
 
-        private async void LoadDataAsync()
+        private async void All_Friends(object sender, RoutedEventArgs e)
         {
             try
             {
-                await Task.Run(() => FetchFriendIDs("Pending")); // Load pending requests by default
+                // Fetch all friends and bind to UI
+                await FetchFriendIDsAsync("all");
                 BindToUI();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show($"Database error: {ex.Message}");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Unexpected error: {ex.Message}");
+                MessageBox.Show($"An error occurred while fetching all friends: {ex.Message}");
             }
         }
 
-        private void FetchFriendIDs(string statusFilter)
+        private async void Pending_Friends(object sender, RoutedEventArgs e)
         {
-            ConnectList.Clear(); // Clear the list to avoid duplicates
-            using (MySqlConnection connection = new MySqlConnection(_connection))
+            try
             {
-                string query = @"SELECT user_id FROM friends 
-                                 WHERE friend_id = @userID AND status = @StatusFilter";
-                connection.Open();
+                // Fetch pending friends and bind to UI
+                await FetchFriendIDsAsync("pending");
+                BindToUI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching pending friends: {ex.Message}");
+            }
+        }
+
+        private async void Accepted_Friends(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Fetch accepted friends and bind to UI
+                await FetchFriendIDsAsync("accepted");
+
+                BindToUI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching accepted friends: {ex.Message}");
+            }
+        }
+
+        private async void LoadDataAsync(string statusFilter)
+        {
+            try
+            {
+                await FetchFriendIDsAsync(statusFilter);
+                BindToUI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data: {ex.Message}");
+            }
+        }
+
+        private async Task FetchFriendIDsAsync(string statusFilter)
+        {
+            ConnectList.Clear();
+
+            using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
+            {
+                string query = @"SELECT user_id, friend_id 
+                                 FROM friends 
+                                 WHERE (user_id = @userID OR friend_id = @userID) 
+                                 AND status = @StatusFilter";
+
+                await connection.OpenAsync();
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@userID", MainWindow.UserID);
                     command.Parameters.AddWithValue("@StatusFilter", statusFilter);
 
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
-                            ConnectList.Add(reader.GetInt32("user_id"));
+                            int userId = reader.GetInt32("user_id");
+                            int friendId = reader.GetInt32("friend_id");
+                            int targetId = userId == MainWindow.UserID ? friendId : userId;
+                            ConnectList.Add(targetId);
                         }
                     }
                 }
@@ -69,100 +111,110 @@ namespace Project_Polished_Version
 
         private void BindToUI()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            ApList.Clear();
+
+            using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
             {
-                ApList.Clear(); // Clear the ObservableCollection
-                using (MySqlConnection connection = new MySqlConnection(_connection))
+                string query = @"SELECT id, first_name, last_name, Job_Title, Profile_Picture, 
+                                 (SELECT status FROM friends 
+                                  WHERE (user_id = id AND friend_id = @CurrentUserId) 
+                                  OR (friend_id = id AND user_id = @CurrentUserId)) AS status 
+                                 FROM applicant_accounts 
+                                 WHERE id = @FriendID";
+
+                connection.Open();
+                foreach (var friendID in ConnectList)
                 {
-                    string query = @"SELECT u.id, u.first_name, u.last_name 
-                                     FROM applicant_accounts u
-                                     WHERE u.id = @FriendID";
-                    connection.Open();
-                    foreach (var friendID in ConnectList)
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        command.Parameters.AddWithValue("@FriendID", friendID);
+                        command.Parameters.AddWithValue("@CurrentUserId", MainWindow.UserID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            command.Parameters.AddWithValue("@FriendID", friendID);
-                            using (MySqlDataReader reader = command.ExecuteReader())
+                            if (reader.Read())
                             {
-                                if (reader.Read())
+                                ApList.Add(new ApplicantUser
                                 {
-                                    var user = new ApplicantUser
-                                    {
-                                        Id = reader.GetInt32("id"),
-                                        First_Name = reader.GetString("first_name"),
-                                    };
-                                    ApList.Add(user); // Add user to the ObservableCollection
-                                }
+                                    Id = reader.GetInt32("id"),
+                                    First_Name = reader.GetString("first_name"),
+                                    Last_Name = reader.GetString("last_name"),
+                                    JobTitle = reader.GetString("Job_Title"),
+                                    Applicant_Photo = reader.GetString("Profile_Picture"),
+                                    IsAccepted = reader["status"].ToString()
+                                });
                             }
                         }
                     }
                 }
-            });
-        }
-
-        private void Friend_Request_Toggle(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (Connected_Applicant_Button.Content.ToString() == "Connect Requests")
-                {
-                    Connected_Applicant_Button.Content = "Connect Accepts";
-                    FetchFriendIDs("Pending"); // Fetch pending friend requests
-                }
-                else if (Connected_Applicant_Button.Content.ToString() == "Connect Accepts")
-                {
-                    Connected_Applicant_Button.Content = "Connect Requests";
-                    FetchFriendIDs("Accepted"); // Fetch accepted friends
-                }
-                BindToUI();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error toggling friend requests: {ex.Message}");
             }
         }
 
-        private void Accept_Friend(object sender, RoutedEventArgs e)
+        private void Friend_Action(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.DataContext is ApplicantUser user) // Ensure proper context
+            if (sender is Button button && button.DataContext is ApplicantUser user)
             {
-                using (MySqlConnection connection = new MySqlConnection(_connection))
+                switch (user.IsAccepted)
                 {
-                    string query = @"UPDATE friends
-                                     SET status = 'Accepted'
-                                     WHERE (user_id = @CurrentUserId AND friend_id = @FriendId)
-                                        OR (user_id = @FriendId AND friend_id = @CurrentUserId)";
+                    case "accepted":
+                        Unfriend(user);
+                        break;
+                    case "pending":
+                        AcceptFriend(user);
+                        break;
+                    default:
+                        MessageBox.Show("Invalid action. Please try again.");
+                        break;
+                }
+            }
+        }
 
-                    try
-                    {
-                        connection.Open();
-                        using (MySqlCommand command = new MySqlCommand(query, connection))
-                        {
-                            command.Parameters.AddWithValue("@CurrentUserId", MainWindow.UserID);
-                            command.Parameters.AddWithValue("@FriendId", user.Id);
+        private void AcceptFriend(ApplicantUser user)
+        {
+            using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
+            {
+                string query = @"UPDATE friends 
+                                 SET status = 'Accepted' 
+                                 WHERE (user_id = @CurrentUserId AND friend_id = @FriendId) 
+                                 OR (user_id = @FriendId AND friend_id = @CurrentUserId)";
 
-                            int rowsAffected = command.ExecuteNonQuery();
-                            if (rowsAffected > 0)
-                            {
-                                MessageBox.Show($"Friend request from {user.First_Name} accepted.");
-                                ApList.Remove(user); // Remove from the ObservableCollection
-                            }
-                            else
-                            {
-                                MessageBox.Show("Failed to accept the friend request. Please try again.");
-                            }
-                        }
-                    }
-                    catch (Exception ex)
+                connection.Open();
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CurrentUserId", MainWindow.UserID);
+                    command.Parameters.AddWithValue("@FriendId", user.Id);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
                     {
-                        MessageBox.Show($"An error occurred: {ex.Message}");
+
+                        MessageBox.Show($"Friend request from {user.First_Name} accepted.");
                     }
                 }
             }
-            else
+        }
+
+        private void Unfriend(ApplicantUser user)
+        {
+            using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
             {
-                MessageBox.Show("Invalid action or data. Please try again.");
+                string query = @"DELETE FROM friends 
+                                 WHERE (user_id = @CurrentUserId AND friend_id = @FriendId) 
+                                 OR (user_id = @FriendId AND friend_id = @CurrentUserId)";
+
+                connection.Open();
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CurrentUserId", MainWindow.UserID);
+                    command.Parameters.AddWithValue("@FriendId", user.Id);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        ApList.Remove(user);
+                        MessageBox.Show($"You have unfriended {user.First_Name}.");
+                    }
+                }
             }
         }
     }

@@ -1,0 +1,32 @@
+﻿<Window x:Class="Project_Polished_Version.Remove_Job_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_Polished_Version"
+        mc:Ignorable="d"
+        Title="Remove_Job_Window" Height="450" Width="800">
+    <Grid>
+        <Border Height="60" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <Border.Background>
+                <ImageBrush Stretch="None" ImageSource="Images/BlueZoom.jpg" AlignmentY="Top" AlignmentX="Center"/>
+            </Border.Background>
+            <StackPanel Orientation="Horizontal" Background="Transparent">
+                <TextBlock Text="Applicant Tracking" Foreground="White" FontSize="24" VerticalAlignment="Center" TextAlignment="Center" Width="1000"/>
+            </StackPanel>
+        </Border>
+        <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Grid.RowSpan="2">
+            <ListView Grid.Row="1" x:Name="Jobs_ListView" Margin="-1,68,0,-172">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Job Title" Width="200" DisplayMemberBinding="{Binding Company_Name}"/>
+                        <GridViewColumn Header="Postition Position" Width="200" DisplayMemberBinding="{Binding Resume_Job_Position}"/>
+                        <GridViewColumn Header="Status" Width="200" DisplayMemberBinding="{Binding Status}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
+        <Button x:Name="Remove_Jobs" Content="Remove" Margin="593,501,95,-106"/>
+    </Grid>
+
+</Window>

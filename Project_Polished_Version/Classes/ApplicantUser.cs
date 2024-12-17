@@ -28,6 +28,8 @@ namespace Project_Polished_Version.Classes
 
         public string Applicant_Photo { get; set; }
 
+        public string IsAccepted { get; set; }
+
         //public ICollection<ApplicantUser> FriendsOf { get; set; } = new List<ApplicantUser>();
         //public ICollection<ApplicantUser> Connected_Applicants { get; set; } = new List<ApplicantUser>();
 

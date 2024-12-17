@@ -15,7 +15,7 @@ namespace Project_Polished_Version
 {
     public partial class Applicant_DashBoard : Window
     {
-        string connectionString = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%";
+        // string connectionString = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%";
         public List<ApplicantUser> list = new List<ApplicantUser>();
         public List<string> names = new List<string>();
         public List<NewsFeed> nFeeds = new List<NewsFeed>();
@@ -61,10 +61,9 @@ namespace Project_Polished_Version
         private async Task<List<NewsFeed>> GetNewsFeedFromDatabaseAsync()
         {
             var newsFeed = new List<NewsFeed>();
-            // string connectionString = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%";
             try
             {
-                using (var connection = new MySqlConnection(connectionString))
+                using (var connection = new MySqlConnection(ConnectionClass.ConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT * FROM posts";
@@ -97,7 +96,7 @@ namespace Project_Polished_Version
         {
             try
             {
-                using (var connection = new MySqlConnection(connectionString))
+                using (var connection = new MySqlConnection(ConnectionClass.ConnectionString))
                 {
                     await connection.OpenAsync();
                     MessageBox.Show("Connection opened successfully.");
@@ -109,7 +108,6 @@ namespace Project_Polished_Version
                     {
                         searchData = new DataTable();
                         await Task.Run(() => adapter.Fill(searchData));
-                        MessageBox.Show($"Data loaded successfully: {searchData.Rows.Count} rows.");
                     }
                 }
             }
@@ -128,7 +126,7 @@ namespace Project_Polished_Version
 
                 foreach (var newsFeed in nFeeds)
                 {
-                    Newsfeed_ListBox.Items.Add(CreateNewsfeedItem(newsFeed.Author, newsFeed.Content));
+                    Newsfeed_ListBox.Items.Add(CreateNewsfeedItem(newsFeed.Author, newsFeed.Content, newsFeed.Id));
                 }
             }
             catch (Exception ex)
@@ -136,6 +134,8 @@ namespace Project_Polished_Version
                 MessageBox.Show($"Error loading newsfeed: {ex.Message}", "Error", MessageBoxButton.OK);
             }
         }
+
+
         private void Searched_Person(object sender, MouseEventArgs e)
         {
             if (sender is ListBox listBox && listBox.SelectedItem is string selectedName)
@@ -146,7 +146,7 @@ namespace Project_Polished_Version
                     us.ChangeInfo($"{accountName.First_Name} {accountName.Last_Name}", accountName.JobTitle, accountName.Address);
                     otherUserKey = accountName.Id;
 
-                    this.Hide();
+                    this.Close();
                     us.Show();
                 }
                 else
@@ -164,8 +164,27 @@ namespace Project_Polished_Version
             }
         }
 
-        private ListBoxItem CreateNewsfeedItem(string userName, string content)
+        private ListBoxItem CreateNewsfeedItem(string userName, string content, int postId)
         {
+            // Create the Remove Post button
+            var removeButton = new Button
+            {
+                Content = "View Details",
+                Margin = new Thickness(5, 0, 0, 0),
+                Padding = new Thickness(10, 5, 10, 5)
+            };
+            // Attach the Click event handler
+            removeButton.Click += RemovePost_Click;
+
+            // Create the View Comments button
+            var viewCommentsButton = new Button
+            {
+                Content = "View Comments",
+                Margin = new Thickness(5, 0, 5, 0),
+                Padding = new Thickness(10, 5, 10, 5)
+            };
+
+            // Build the ListBoxItem content
             var border = new Border
             {
                 Background = new ImageBrush
@@ -180,17 +199,12 @@ namespace Project_Polished_Version
                 {
                     RowDefinitions =
             {
-                new RowDefinition { Height = GridLength.Auto }, // userName and content
-                new RowDefinition { Height = GridLength.Auto }  // buttons
+                new RowDefinition { Height = GridLength.Auto }, // UserName and Content
+                new RowDefinition { Height = GridLength.Auto }  // Buttons
             },
                     Children =
             {
                 // UserName and Content Section
-                new StackPanel
-                {
-                    Orientation = Orientation.Vertical,
-                    Children =
-                    {
                 new StackPanel
                 {
                     Orientation = Orientation.Vertical,
@@ -211,9 +225,6 @@ namespace Project_Polished_Version
                             Foreground = Brushes.White
                         }
                     }
-                }
-
-                    }
                 },
 
                 // Buttons Section
@@ -224,35 +235,27 @@ namespace Project_Polished_Version
                     Margin = new Thickness(0, 5, 0, 0),
                     Children =
                     {
-                        new Button
-                        {
-                            Content = "View Comments",
-                            Margin = new Thickness(5, 0, 5, 0),
-                            Padding = new Thickness(10, 5, 10, 5)
-                        },
-                        new Button
-                        {
-                            Content = "View Details",
-                            Margin = new Thickness(5, 0, 0, 0),
-                            Padding = new Thickness(10, 5, 10, 5)
-                        }
+                        viewCommentsButton,
+                        removeButton // Add the Remove Post button
                     }
                 }
             }
                 }
             };
 
-            // Set rows for the grid children
-            Grid.SetRow(border.Child, 0); // UserName and Content
-            Grid.SetRow((border.Child as Grid)?.Children[1], 1); // Buttons Section
+            // Set Grid Row positions
+            Grid.SetRow(border.Child, 0); // UserName and Content section
+            Grid.SetRow((border.Child as Grid).Children[1], 1); // Buttons section
 
-            return new ListBoxItem { Content = border, Height = 100 };
+            return new ListBoxItem { Content = border, Height = 100, Tag = postId };
         }
+
+
 
         private void searchJobs_btn(object sender, RoutedEventArgs e)
         {
             SearchJob_Window sjw = new SearchJob_Window();
-            this.Hide();
+            this.Close();
             sjw.Show();
         }
 
@@ -267,7 +270,7 @@ namespace Project_Polished_Version
         private void Application_Check_Button(object sender, RoutedEventArgs e)
         {
             Applicant_Tracker ap = new Applicant_Tracker();
-            this.Hide();
+            this.Close();
             ap.Show();
         }
 
@@ -275,14 +278,14 @@ namespace Project_Polished_Version
         {
             Applicant_Profile up = new Applicant_Profile();
             Applicant_Profile.windowNumber = 1;
-            this.Hide();
+            this.Close();
             up.Show();
         }
 
         private void Notification_Button(object sender, RoutedEventArgs e)
         {
             Inbox inbox = new Inbox();
-            inbox.Show();
+            inbox.Close();
 
         }
 
@@ -290,7 +293,7 @@ namespace Project_Polished_Version
         {
             Company_Profile.WindowNumber = 1;
             Company_Search cs = new Company_Search();
-            this.Hide();
+            this.Close();
             cs.Show();
         }
 
@@ -298,7 +301,7 @@ namespace Project_Polished_Version
         {
             Applicant_Search applicant_Search = new Applicant_Search();
             Applicant_Profile.windowNumber = 2;
-            this.Hide();
+            this.Close();
             applicant_Search.Show();
 
         }
@@ -311,7 +314,7 @@ namespace Project_Polished_Version
 
                 foreach (var newsFeed in nFeeds)
                 {
-                    Newsfeed_ListBox.Items.Add(CreateNewsfeedItem(newsFeed.Author, newsFeed.Content));
+                    Newsfeed_ListBox.Items.Add(CreateNewsfeedItem(newsFeed.Author, newsFeed.Content, newsFeed.Id));
                 }
             }
             catch (Exception ex)
@@ -334,20 +337,70 @@ namespace Project_Polished_Version
         private void Pending_Button(object sender, RoutedEventArgs e)
         {
             Applicant_Tracker ap = new Applicant_Tracker();
-            this.Hide();
+            this.Close();
             ap.Show();
         }
 
         private void Messages_RB_Checked(object sender, RoutedEventArgs e)
         {
             Messages ap = new Messages();
-            this.Hide();
+            this.Close();
             ap.Show();
+        }
+        private void RemovePost_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is int postId)
+            {
+                if (MessageBox.Show("Are you sure you want to remove this post?", "Confirm", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using (var connection = new MySqlConnection(ConnectionClass.ConnectionString))
+                        {
+                            connection.Open();
+                            string query = "DELETE FROM posts WHERE post_id = @PostId";
+
+                            using (var cmd = new MySqlCommand(query, connection))
+                            {
+                                cmd.Parameters.AddWithValue("@PostId", postId);
+
+                                int rowsAffected = cmd.ExecuteNonQuery();
+                                if (rowsAffected > 0)
+                                {
+                                    MessageBox.Show("Post removed successfully.", "Success");
+                                    _ = ReloadNewsfeedAsync();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Failed to remove the post.", "Error");
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error removing post: {ex.Message}", "Error");
+                    }
+                }
+            }
         }
 
         private void Newsfeed_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (Newsfeed_ListBox.SelectedItem is ListBoxItem selectedItem)
+            {
+                if (selectedItem.Tag is int postId)
+                {
+                    MessageBox.Show($"Post ID: {postId}", "Selected Post", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                    // Retrieve the corresponding NewsFeed object
+                    var selectedPost = nFeeds.FirstOrDefault(post => post.Id == postId);
+                    if (selectedPost != null)
+                    {
+                        MessageBox.Show($"Author: {selectedPost.Author}\nContent: {selectedPost.Content}", "Post Details");
+                    }
+                }
+            }
         }
     }
 }

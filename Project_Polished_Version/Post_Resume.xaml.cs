@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Project_Polished_Version.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace Project_Polished_Version
 
                 int postedId = 0;
 
-                using (MySqlConnection connection = new MySqlConnection("Server=127.0.0.1;Database=project_database;UserName=root;Password=SQLDatabase404"))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
                 {
                     connection.Open();
 

@@ -8,7 +8,6 @@
         Height="670" Width="1000"
         Title="UM HIRE"
         Icon="Images/UMHIREICON.ico"
-        AllowsTransparency="True"
         Background="AliceBlue"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
@@ -48,7 +47,7 @@
             <TextBlock x:Name="Company_Name" Text="Colton Randolph" FontWeight="Bold" FontSize="26" Foreground="White" Margin="0,30,0,0" Grid.ColumnSpan="4" TextAlignment="Center" Height="59" VerticalAlignment="Top" Grid.RowSpan="2" />
             <TextBlock x:Name="Company_Email" Text="Content strategist and conversion copywriter" FontSize="16" Foreground="White" Margin="0,70,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" TextAlignment="Center" Grid.RowSpan="2" />
             <!-- Newsfeed Section -->
-            <StackPanel Grid.Row="1" Margin="0,50,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Height="686">
+            <StackPanel x:Name="Button_SP" Grid.Row="1" Margin="0,50,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Height="686">
                 <Button 
                     x:Name="Messages_RB" 
                     Content="Messages" 
@@ -128,7 +127,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0"/>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,-310,0,10">
                     <TextBlock Text="About" Foreground="White" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" Margin="20,-30,0,0" />
-                    <Button x:Name="abt_you_btn" Content="Edit" Width="123" Margin="10,-30,0,0" Click="CompanyAbout" Height="34" />
+                    <Button x:Name="Company_About_Btn" Content="Edit" Width="123" Margin="10,-30,0,0" Click="CompanyAbout" Height="34" />
                 </StackPanel>
                 <TextBox 
                     x:Name="About_TextBox" 
@@ -144,6 +143,7 @@
 
             </StackPanel>
             <Image Source="Images/LOGO.png" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="156" Grid.RowSpan="2"/>
+            <Image Source="Images/LORENZ.jpg" Grid.Column="3" HorizontalAlignment="Left" Height="100" Margin="118,38,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="100"/>
         </Grid>
     </Border>
 </Window>

@@ -10,9 +10,6 @@ using System.Windows.Media;
 
 namespace Project_Polished_Version
 {
-    /// <summary>
-    /// Interaction logic for Company_DashBoard.xaml
-    /// </summary>
     public partial class Company_DashBoard : Window
     {
         private string _connection = "Server=localhost;" +
@@ -22,29 +19,31 @@ namespace Project_Polished_Version
         public List<NewsFeed> nFeeds = new List<NewsFeed>();
         public Company_DashBoard()
         {
+            MessageBox.Show("Show: " + MainWindow.CompanyID);
+            MessageBox.Show("Show: " + MainWindow.UserType);
             InitializeComponent();
             LoadNewsfeedAsync();
             Applicant_Search.As_WindowTracker = 2;
             Company_Profile.WindowNumber = 2;
         }
 
-        private async Task ReloadNewsfeedAsync()
-        {
-            try
-            {
-                Newsfeed_ListBox.Items.Clear();
-                nFeeds = await GetNewsFeedFromDatabaseAsync();
+        //private async Task ReloadNewsfeedAsync()
+        //{
+        //    try
+        //    {
+        //        Newsfeed_ListBox.Items.Clear();
+        //        nFeeds = await GetNewsFeedFromDatabaseAsync();
 
-                foreach (var newsFeed in nFeeds)
-                {
-                    Newsfeed_ListBox.Items.Add(CreateNewsfeedItem(newsFeed.Author, newsFeed.Content));
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error reloading newsfeed: {ex.Message}", "Error", MessageBoxButton.OK);
-            }
-        }
+        //        foreach (var newsFeed in nFeeds)
+        //        {
+        //            Newsfeed_ListBox.Items.Add(CreateNewsfeedItem(newsFeed.Author, newsFeed.Content));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error reloading newsfeed: {ex.Message}", "Error", MessageBoxButton.OK);
+        //    }
+        //}
 
         private ListBoxItem CreateNewsfeedItem(string userName, string content)
         {
@@ -137,7 +136,7 @@ namespace Project_Polished_Version
             // string connectionString = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%";
             try
             {
-                using (var connection = new MySqlConnection(_connection))
+                using (var connection = new MySqlConnection(ConnectionClass.ConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT * FROM posts";
@@ -193,21 +192,17 @@ namespace Project_Polished_Version
         private void Click_Profile(object sender, RoutedEventArgs e)
         {
             Company_Profile cp = new Company_Profile();
-            this.Hide();
+            this.Close();
             cp.Show();
         }
 
-        private void applicantsearch_btn(object sender, RoutedEventArgs e)
+        private void applicantsearch_click(object sender, RoutedEventArgs e)
         {
             Applicant_Search ap = new Applicant_Search();
-            this.Hide();
+            this.Close();
             ap.Show();
         }
 
-        private void application_btn(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void Log_out_btn(object sender, RoutedEventArgs e)
         {

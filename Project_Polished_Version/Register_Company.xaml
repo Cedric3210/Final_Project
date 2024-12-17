@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_Polished_Version"
         mc:Ignorable="d"
-        Title="Register_Company" Height="450" Width="800">
+        Title="UM HIRE" Height="670" Width="1000"
+         Background="AliceBlue"
+         ResizeMode="NoResize"
+         WindowStartupLocation="CenterScreen"
+         Icon="Images/UMHIREICON.ico">
     <Grid Background="AliceBlue">
         <!-- Left Section -->
         <Grid.ColumnDefinitions>
@@ -38,7 +42,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="Fist name" Margin="10"/>
+            <Label Grid.Row="0" Content="First name" Margin="10"/>
             <TextBox x:Name="Company_Name_TxtBox" Grid.Row="0" VerticalAlignment="Center" Margin="100,10,20,10"/>
             <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="100,10,20,10"/>
 

@@ -11,6 +11,7 @@
         AllowsTransparency="True"
         Background="AliceBlue"
         ResizeMode="NoResize"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.Background>
@@ -62,7 +63,7 @@
                     </ListBoxItem>
                 </ListBox>
             </StackPanel>
-            <Button Content="Back" HorizontalAlignment="Left" Margin="10,600,0,0" VerticalAlignment="Top" Height="36" Width="55" Click="BackMessagesClickBtn"/>
+            <Button Content="Back" HorizontalAlignment="Left" Margin="10,624,0,0" VerticalAlignment="Top" Height="36" Width="55" Click="BackMessagesClickBtn"/>
         </Grid>
 
         <!-- Chat Section -->

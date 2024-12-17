@@ -11,11 +11,14 @@ namespace Project_Polished_Version
     {
         private string _connection = "Server=localhost;Database=project_database;UserName=root;Password=Cedric1234%%";
         public static int WindowNumber;
+
         public Company_Profile(CompanyUser company)
         {
             InitializeComponent();
             Company_Name.Text = company.CompanyName;
             Company_Email.Text = company.CompanyEmail;
+            Buttons_SP.Children.Remove(Company_About_Btn);
+
         }
 
         public Company_Profile()
@@ -59,7 +62,7 @@ namespace Project_Polished_Version
             string content = "";
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(_connection))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT content FROM company_info WHERE userId = @userId AND info_type = @infoType";
@@ -92,7 +95,7 @@ namespace Project_Polished_Version
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(_connection))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionClass.ConnectionString))
                 {
                     connection.Open();
                     using (MySqlCommand command = new MySqlCommand(queryUpdate, connection))
@@ -121,15 +124,15 @@ namespace Project_Polished_Version
 
         private void CompanyAbout(object sender, RoutedEventArgs e)
         {
-            if (abt_you_btn.Content.ToString() == "Edit")
+            if (Company_About_Btn.Content.ToString() == "Edit")
             {
                 About_TextBox.IsReadOnly = false;
                 About_TextBox.Focus();
-                abt_you_btn.Content = "Save";
+                Company_About_Btn.Content = "Save";
             }
-            else if (abt_you_btn.Content.ToString() == "Save")
+            else if (Company_About_Btn.Content.ToString() == "Save")
             {
-                abt_you_btn.Content = "Edit";
+                Company_About_Btn.Content = "Edit";
                 SaveData(About_TextBox, "About_Post");
                 About_TextBox.IsReadOnly = true;
             }
@@ -147,6 +150,13 @@ namespace Project_Polished_Version
                     break;
             }
             this.Close();
+        }
+
+        private void Create_Jobs_Btn(object sender, RoutedEventArgs e)
+        {
+            Create_Jobs_Window cjw = new Create_Jobs_Window();
+            cjw.Show();
+
         }
     }
 }

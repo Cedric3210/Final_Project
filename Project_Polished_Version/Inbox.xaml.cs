@@ -122,7 +122,7 @@ namespace Project_Polished_Version
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
 
         private void Compose_Email_Click(object sender, RoutedEventArgs e)

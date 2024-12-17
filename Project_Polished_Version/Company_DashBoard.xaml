@@ -8,7 +8,6 @@
         Height="670" Width="1000"
         Title="UM HIRE"
         Icon="Images/UMHIREICON.ico"
-        AllowsTransparency="True"
         Background="AliceBlue"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
@@ -20,18 +19,20 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <!-- Adjusted proportions -->
-                <ColumnDefinition Width="180*"/>
-                <ColumnDefinition Width="245*"/>
-                <ColumnDefinition Width="142*"/>
+                <ColumnDefinition Width="425*"/>
+                <ColumnDefinition Width="85*"/>
+                <ColumnDefinition Width="56*"/>
                 <ColumnDefinition Width="283*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="75"/>
                 <!-- Adjusted for new height -->
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <RowDefinition Height="491*"/>
+                <RowDefinition Height="104*"/>
 
+
+            </Grid.RowDefinitions>
             <StackPanel
                 Grid.Row="1" Margin="0,3,0,0">
                 <RadioButton x:Name="Profile_RB"
@@ -55,7 +56,7 @@
                         Height="60"
                         Foreground="White"
                         FontSize="12"
-                        Style="{StaticResource MenuButtons}" Margin="-29,150,-21,-203" Click="Log_out_btn" Width="180"/>
+                        Style="{StaticResource MenuButtons}" Margin="-30,126,-20,-179" Click="Log_out_btn" Width="180"/>
                 </Grid>
             </StackPanel>
 
@@ -65,7 +66,7 @@
 
             <Grid/>
 
-            <Grid Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,56,0">
                 <Grid>
                     <Grid Height="100" VerticalAlignment="Top">
                         <ListBox Name="SearchResultsListBox" Height="400" VerticalAlignment="Top" Margin="10,40,10,10" Visibility="Collapsed" />
@@ -74,14 +75,14 @@
             </Grid>
 
             <!-- Newsfeed Section -->
-            <StackPanel Grid.Column="1" Margin="10,55,10,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Grid.RowSpan="2">
+            <StackPanel Grid.Column="1" Margin="10,55,10,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Grid.RowSpan="3" Height="599">
 
                 <TextBlock Text="Applicant Avilable" 
                            FontSize="16" 
                            FontWeight="Bold" 
                            Foreground="White" 
                            Margin="0,50,0,10" Height="30" VerticalAlignment="Center"/>
-                <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Padding="5" Height="479" Width="810">
+                <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="1" Padding="5" Height="453" Width="810">
                     <ListBox x:Name="Newsfeed_ListBox"
                          Background="White"
                          Foreground="White"
@@ -114,7 +115,7 @@
                 VerticalAlignment="Center" 
                 Width="110" 
                 Height="25" 
-                FontSize="10" Click="application_btn">
+                FontSize="10" Click="applicantsearch_click">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
@@ -127,9 +128,8 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Image Source="Images/Logo.png" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="150" Grid.RowSpan="2"/>
+            <Image Source="Images/Logo.png" HorizontalAlignment="Center" Height="150" VerticalAlignment="Top" Width="150" Grid.RowSpan="2"/>
         </Grid>
     </Border>
-
 </Window>
 

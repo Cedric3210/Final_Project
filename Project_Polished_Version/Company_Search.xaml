@@ -8,7 +8,6 @@
         Height="670" Width="1000"
         Title="UM HIRE"
         Icon="Images/UMHIREICON.ico"
-        AllowsTransparency="True"
         Background="AliceBlue"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
@@ -27,8 +26,45 @@
         <!-- Job List Section -->
         <Border CornerRadius="15" Background="#F9F9F9" Margin="30,30,30,30">
             <StackPanel Grid.Column="0" Margin="10,10,10,10" Background="#F9F9F9">
-                <Button Content="Back" Click="Back_Button" Width="68" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Button Name="ApplyNowButton" Content="View Profile" HorizontalAlignment="Center" Background="#0078D7" Foreground="White" Padding="10" Margin="0,20,0,0" Click="viewProfile_btn" />
+                <Button Content="Back" 
+                    Click="Back_Button" 
+                    Width="68" 
+                    VerticalAlignment="Top" 
+                    HorizontalAlignment="Left" 
+                    Margin="10,10,0,0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                     VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button x:Name="ApplyNowButton" 
+                    Content="View Profile" 
+                    HorizontalAlignment="Center" 
+                    Background="#0078D7" 
+                    Foreground="White" 
+                    Padding="10" 
+                    Margin="0,20,0,0" 
+                    Click="viewProfile_btn">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="5" Width="80" Height="40">
+                                <!-- Adjust the value for desired curvature -->
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
                 <TextBox Name="SearchBox"  Margin="0,50,0,10" Padding="10" BorderBrush="Gray" BorderThickness="1" TextChanged="SearchBox_txtchange" />
                 <ListBox x:Name="CompanyListBox" Margin="0,10" Background="White" BorderBrush="LightGray" BorderThickness="1" Height="346" SelectionChanged="Company_Profile"
                    >
